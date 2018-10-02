@@ -82,18 +82,18 @@ subset(new_total, !(new_total$date %in% total$date))
 ```{r fig.height=8}
 new_activity$date <- weekdays(new_activity$date)
 wk <- c("Saturday", "Sunday")
-new_activity$days <- factor(new_activity$date %in% wk, labels = c("Weekend", "Weekday"))
+new_activity$days <- factor(new_activity$date %in% wk, labels = c("Weekday", "Weekend"))
 new_average <- aggregate(new_steps~interval + days, new_activity, mean)
 par(mfrow = c(2,1))
 with(subset(new_average, days=="Weekend"), 
-     plot(interval, new_steps, 
+     plot(interval, new_steps, ylim = c(-2, 200),
           xlab = " 5-minute Interval", ylab = "Number of Steps", 
           main = "Weekends", type = "l"))
 with(subset(new_average, days=="Weekday"), 
-     plot(interval, new_steps, ylim = c(-2, 200), 
+     plot(interval, new_steps, 
           xlab = " 5-minute Interval", ylab = "Number of Steps", 
           main = "Weekdays", type = "l"))
 ```
   
-  As shown in the figures above, the object is both very active in the morning during weekends and weekdays. He/she walks a bit more in the morning during weekends than weekdays. But he/she slows down and walks less during weekends than weekdays.
+  As shown in the figures above, the object is both very active in the morning during weekends and weekdays. He/she walks a bit more in the morning during weekdays than weekends. But he/she slows down and walks less during weekdays than weekends.
   

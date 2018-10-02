@@ -81,6 +81,8 @@ From table above, on average across all the days in the dataset, the **interval 
   
   
 ## Imputing missing values
+  
+  1. Calculate and report the total number of missing values in the dataset (i.e. the total number of rows with NAs)
 
 ```r
 sum(is.na(activity$steps))
@@ -99,7 +101,7 @@ mean(is.na(activity$steps))
 ```
 As the table above shows, the total number of missing values in the dataset is **2304**, around **11.1%** of the total observation data.  
   
-If we use the mean for that 5-minute interval to fill in all of the missing values in the dataset, we recreate a dataset with all the missing values filled in and make a histogram of the total number of steps taken each day. The output is shown as below:
+  2. If we use the mean for that 5-minute interval to fill in all of the missing values in the dataset, we recreate a dataset with all the missing values filled in and make a histogram of the total number of steps taken each day. The output is shown as below:
   
 
 ```r
@@ -112,6 +114,8 @@ hist(new_total$new_steps, main="Histogram of Total Number of Steps per Day after
 ```
 
 ![](PA1_template_files/figure-html/unnamed-chunk-5-1.png)<!-- -->
+  
+  3. Calculate and report the mean and median total number of steps taken per day. Do these values differ from the estimates from the first part of the assignment?
 
 ```r
 summary(new_total$new_steps)
@@ -124,6 +128,7 @@ summary(new_total$new_steps)
   
   As shown in the table above, the mean and median total number of steps taken per day both are **10766**. The average number of steps taken per day doesn't change after the missing value filled in with the mean of interval value. 
   
+  4. What is the impact of imputing missing data on the estimates of the total daily number of steps?
 
 ```r
 subset(new_total, !(new_total$date %in% total$date))
@@ -149,20 +154,20 @@ subset(new_total, !(new_total$date %in% total$date))
 ```r
 new_activity$date <- weekdays(new_activity$date)
 wk <- c("Saturday", "Sunday")
-new_activity$days <- factor(new_activity$date %in% wk, labels = c("Weekend", "Weekday"))
+new_activity$days <- factor(new_activity$date %in% wk, labels = c("Weekday", "Weekend"))
 new_average <- aggregate(new_steps~interval + days, new_activity, mean)
 par(mfrow = c(2,1))
 with(subset(new_average, days=="Weekend"), 
-     plot(interval, new_steps, 
+     plot(interval, new_steps, ylim = c(-2, 200),
           xlab = " 5-minute Interval", ylab = "Number of Steps", 
           main = "Weekends", type = "l"))
 with(subset(new_average, days=="Weekday"), 
-     plot(interval, new_steps, ylim = c(-2, 200), 
+     plot(interval, new_steps, 
           xlab = " 5-minute Interval", ylab = "Number of Steps", 
           main = "Weekdays", type = "l"))
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-7-1.png)<!-- -->
+![](PA1_template_files/figure-html/unnamed-chunk-8-1.png)<!-- -->
   
-  As shown in the figures above, the object is both very active in the morning during weekends and weekdays. He/she walks a bit more in the morning during weekends than weekdays. But he/she slows down and walks less during weekends than weekdays.
+  As shown in the figures above, the object is both very active in the morning during weekends and weekdays. He/she walks a bit more in the morning during weekdays than weekends. But he/she slows down and walks less during weekdays than weekends.
   
